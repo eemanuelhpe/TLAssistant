@@ -4,7 +4,7 @@ const httpsProxyAgent = require('https-proxy-agent');
 let agent = new httpsProxyAgent('http://web-proxy.il.softwaregrp.net:8080/');
 
 module.exports  = {
-    getContent: () =>{
+    getContent: (authData,url) =>{
         return auth(authData).then((cookies) =>{
             return get(cookies,url);
         });

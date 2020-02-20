@@ -1,37 +1,83 @@
+const util = require('util');
+const fs = require('fs');
+const path = require('path');
 
 
-function createTabEmailHtml(title, data, fields) {
+
+
+module.exports = {
+    createEmailHtmlFromList(listOfData) {
+        //todo sort by rank, and take style into account
+        let htmlContent = '';
+        listOfData.forEach(value => {
+            let subSectionTitle = value.notificationEntry.title;
+            let fields = value.notificationEntry.fields;
+            htmlContent += createTabEmailHtml(value.notificationEntry, value.data);
+
+        });
+
+        return getFinaHtml(htmlContent);
+    }
+};
+
+function createLink(id, notificationEntry) {
+    return util.format('%s/ui/?p=%s/%s#/entity-navigation?entityType=%s&id=%s',
+        notificationEntry.baseUrl, notificationEntry.sharedSpaceId, notificationEntry.workspaceId, notificationEntry.entity, id);
+}
+
+function getFinaHtml(htmlBody) {
+    var jsonPath = path.join(__dirname, '.', 'template.html');
+    let data = fs.readFileSync(jsonPath, 'utf8');
+    return data.replace(' <!-- octane content -->',htmlBody);
+}
+
+
+function createTabEmailHtml(notificationEntry, data) {
     let str = "";
-    str += '<h1>' + title + '</h1>';
-
+    str += '<h3 style=\"color:#5558af \">' + notificationEntry.title + '</h3>';
     data.data.forEach(item => {
-        fields.forEach(fieldLine => {
-            str += '<p>';
+        str += '<p style=\"line-height:150%\" >';
+        notificationEntry.fields.forEach(fieldLine => {
+            let counter = 0;
             fieldLine.forEach(field => {
                 let fieldName = getFieldName(field);
                 let label = getLabel(field);
-                str += '<span style=\"padding-left: 4em\">';
-                str += ' ' +  label + ': ' +  getDescendantProp(item, fieldName) + '</span>';
+                if (counter >0){
+                    str += '&#160;&#160;&#160';
+                }
+                if (label && label.length > 0) {
+                    str += '<b>' + label + ':</b>  ';
+                }
+                if (fieldName === 'id') {
+                    let link = createLink(item['id'], notificationEntry)
+                    str += '<a href=\"' + link + '\">' + item.id + '</a>';
+                } else {
+                    str += getDotedProp(item, fieldName);
+                }
+                counter++;
 
             });
-            str += '</p>';
+            str += '<br>';
         });
-        str += '<hr>';
+        str += '</p>';
     });
+    str += '<hr>';
+    str += '</div>'
     return str;
 }
 
-function getLabel(field){
+function getLabel(field) {
     let label = field;
-    if (field.includes(':')){
-        label = field.substring(field.indexOf(':')+1);
+    if (field.includes(':')) {
+        label = field.substring(field.indexOf(':') + 1);
     }
     return capitalizeFirstLetter(label);
 
 }
+
 function getFieldName(field) {
-    if (field.includes(':')){
-        return field.substring(0,field.indexOf(':'));
+    if (field.includes(':')) {
+        return field.substring(0, field.indexOf(':'));
     }
     return field;
 }
@@ -42,7 +88,7 @@ function capitalizeFirstLetter(string) {
 
 function createTableEmailHtml(title, data, fields) {
     let str = "";
-    str += '<h1>' + title + '</h1>';
+    str += '<h3>' + title + '</h3>';
 
     str += '<table style="width:100%">';
 
@@ -55,7 +101,7 @@ function createTableEmailHtml(title, data, fields) {
     data.data.forEach(item => {
         str += '<tr>'
         fields.forEach(field => {
-            str += '<td>' + getDescendantProp(item, field) + '</td>';
+            str += '<td>' + getDotedProp(item, field) + '</td>';
 
         })
         str += '</tr>'
@@ -65,25 +111,10 @@ function createTableEmailHtml(title, data, fields) {
     return str;
 }
 
-function getDescendantProp(item, field) {
+function getDotedProp(item, field) {
     var arr = field.split(".");
     while (arr.length && (item = item[arr.shift()])) ;
     return item;
 }
 
-
-module.exports = {
-    createEmailHtmlFromList (listOfData){
-        //todo sort by rank, and take style into account
-        let finalHtml = "<html><head></head><body  style=\"font-family:Roboto, RobotoDraft, Helvetica, Arial,sans-serif\">";
-        listOfData.forEach(value => {
-            let subSectionTitle = value.notificationEntry.title;
-            let fields = value.notificationEntry.fields;
-            finalHtml += createTabEmailHtml(subSectionTitle, value.data, fields);
-
-        });
-        finalHtml += "</body></html>";
-        return finalHtml;
-    }
-}
 

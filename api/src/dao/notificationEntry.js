@@ -17,4 +17,3 @@ module.exports = {
 
 };
 
-module.exports = NotificationEntry;

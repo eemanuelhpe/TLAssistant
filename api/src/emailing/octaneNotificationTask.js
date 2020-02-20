@@ -1,4 +1,4 @@
-import emailDesigner from "./emailDesigner";
+const emailDesigner = require( "./emailDesigner");
 
 const octaneConnector = require('./octaneConnector.js');
 const emailService = require('./emailService.js');
@@ -10,7 +10,7 @@ var _ = require('lodash');
 
 module.exports = {
 
-    sendEmailsToUsers:   async () =>{
+    async sendEmailsToUsers(){
         let notification_list = await dbUtils.getAllEntriesFromCollection('notification_list');
         let emailMap = new Map();
         notification_list.forEach(entry => {
@@ -26,6 +26,7 @@ module.exports = {
             createAndSentMail(email, entries);
         }
     }
+
 }
 
 
@@ -56,7 +57,7 @@ async function createAndSentMail(email, notificationEntries) {
 
 //temp notificationQuery = url
 function buildUrl(notificationEntry){
-    return util.format('%s/api/shared_spaces/%s/workspaces/%s/%s?%s'
+    return util.format('%s/api/shared_spaces/%s/workspaces/%s/%ss?%s'
         ,notificationEntry.baseUrl,notificationEntry.sharedSpaceId, notificationEntry.workspaceId,notificationEntry.entity,notificationEntry.query )
 
 }
