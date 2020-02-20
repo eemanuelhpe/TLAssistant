@@ -1,36 +1,41 @@
+import emailDesigner from "./emailDesigner";
+
 const octaneConnector = require('./octaneConnector.js');
 const emailService = require('./emailService.js');
-const emailDesigner = require('./emailDesigner');
 const dbUtils = require('../db_utils/dbUtil')
 const config = require('../../privateConfig/config')
+const util = require('util');
 
 var _ = require('lodash');
 
+module.exports = {
 
+    sendEmailsToUsers:   async () =>{
+        let notification_list = await dbUtils.getAllEntriesFromCollection('notification_list');
+        let emailMap = new Map();
+        notification_list.forEach(entry => {
+            let entries = emailMap.get(entry.email);
+            if (!entries) {
+                entries = [];
+                emailMap.set(entry.email, entries);
+            }
+            entries.push(entry);
+        });
 
-async function sendEmailsToUsers() {
-    let notification_list = await dbUtils.getAllEntriesFromCollection('notification_list');
-    let emailMap = new Map();
-    notification_list.forEach(entry => {
-        let entries = emailMap.get(entry.email);
-        if (!entries) {
-            entries = [];
-            emailMap.set(entry.email, entries);
+        for (let [email, entries] of emailMap) {
+            createAndSentMail(email, entries);
         }
-        entries.push(entry);
-    });
-
-    for (let [email, entries] of emailMap) {
-        createAndSentMail(email, entries);
     }
 }
+
+
 
 async function createAndSentMail(email, notificationEntries) {
     let authData = config.octaneAuth;
     let promiseArray = [];
 
     notificationEntries.forEach(entry => {
-        let url = buildUrl(entry.query);
+        let url = buildUrl(entry);
         promiseArray.push(octaneConnector.getContent(authData,url));
     });
 
@@ -50,10 +55,11 @@ async function createAndSentMail(email, notificationEntries) {
 }
 
 //temp notificationQuery = url
-function buildUrl(notificationQuery){
-    return notificationQuery;
+function buildUrl(notificationEntry){
+    return util.format('%s/api/shared_spaces/%s/workspaces/%s/%s?%s'
+        ,notificationEntry.baseUrl,notificationEntry.sharedSpaceId, notificationEntry.workspaceId,notificationEntry.entity,notificationEntry.query )
+
 }
 
 
-module.exports = {sendEmailsToUsers};
 

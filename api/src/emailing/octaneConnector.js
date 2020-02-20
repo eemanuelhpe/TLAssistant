@@ -3,15 +3,17 @@ const axios = require('axios')
 const httpsProxyAgent = require('https-proxy-agent');
 let agent = new httpsProxyAgent('http://web-proxy.il.softwaregrp.net:8080/');
 
+module.exports  = {
+    getContent: () =>{
+        return auth(authData).then((cookies) =>{
+            return get(cookies,url);
+        });
+    }
+};
 
-function getContent(authData,url){
-   return auth(authData).then((cookies) =>{
-        return get(cookies,url);
-    });
-}
 
 function auth(authData) {
-    return axios.post('https://center.almoctane.com/authentication/sign_in', {
+    return axios.post(authData.baseUrl+'/authentication/sign_in', {
         user: authData.user,
         password:authData.password
     },{httpsAgent: agent})
@@ -44,7 +46,6 @@ function get(cookies, url) {
 }
 
 
-module.exports = {getContent};
 
 
 
