@@ -1,9 +1,10 @@
-const mongo = require('mongodb').MongoClient;
+import { MongoClient } from 'mongodb';
 
-module.exports = {
-    createSite:(url, dbName, collectionName)=> {
+export let createSite = {
+
+    createNewCollection:(url, dbName, collectionName)=> {
         let database = null;
-        return mongo.connect(url, {
+        return MongoClient.connect(url, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         }).then((db) => {

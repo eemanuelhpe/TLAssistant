@@ -1,16 +1,17 @@
-const axios = require('axios')
+import axios from "axios";
+import httpsProxyAgent from "https-proxy-agent";
 
-const httpsProxyAgent = require('https-proxy-agent');
-let agent = new httpsProxyAgent('http://web-proxy.il.softwaregrp.net:8080/');
+let agent =  new httpsProxyAgent.HttpsProxyAgent('http://web-proxy.il.softwaregrp.net:8080/');
 
-module.exports  = {
-    getContent: (authData,url) =>{
-        return auth(authData).then((cookies) =>{
-            return get(cookies,url);
-        });
-    }
+export let octaneConnector = {
+    getContent:getContent
 };
 
+function getContent (authData,url) {
+    return auth(authData).then((cookies) =>{
+    return get(cookies,url);
+});
+}
 
 function auth(authData) {
     return axios.post(authData.baseUrl+'/authentication/sign_in', {

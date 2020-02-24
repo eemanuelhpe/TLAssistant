@@ -204,10 +204,10 @@ At present, we officially aim to support the last two versions of the following 
 
 ## Resources
 - Demo: <https://demos.creative-tim.com/argon-dashboard-react/#/admin/index?ref=adr-github-readme>
-- Download Page: <https://www.creative-tim.com/product/argon-dashboard-react?ref=adr-github-readme>
+- Download Page: <https://www.ts.creative-tim.com/product/argon-dashboard-react?ref=adr-github-readme>
 - Documentation: <https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-github-readme>
-- License Agreement: <https://www.creative-tim.com/license?ref=adr-github-readme>
-- Support: <https://www.creative-tim.com/contact-us?ref=adr-github-readme>
+- License Agreement: <https://www.ts.creative-tim.com/license?ref=adr-github-readme>
+- Support: <https://www.ts.creative-tim.com/contact-us?ref=adr-github-readme>
 - Issues: [Github Issues Page](https://github.com/creativetimofficial/argon-dashboard-react/issues?ref=creativetim)
 - **Kit:**
 
@@ -225,7 +225,7 @@ We use GitHub Issues as the official bug tracker for the Material Kit. Here are 
 
 ## Licensing
 
-- Copyright 2018 Creative Tim (https://www.creative-tim.com/?ref=adr-github-readme)
+- Copyright 2018 Creative Tim (https://www.ts.creative-tim.com/?ref=adr-github-readme)
 
 - Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md?ref=creativetim)
 
@@ -246,8 +246,8 @@ We use GitHub Issues as the official bug tracker for the Material Kit. Here are 
 
 Twitter: <https://twitter.com/CreativeTim?ref=creativetim>
 
-Facebook: <https://www.facebook.com/CreativeTim?ref=creativetim>
+Facebook: <https://www.ts.facebook.com/CreativeTim?ref=creativetim>
 
 Dribbble: <https://dribbble.com/creativetim?ref=creativetim>
 
-Instagram: <https://www.instagram.com/CreativeTimOfficial?ref=creativetim>
+Instagram: <https://www.ts.instagram.com/CreativeTimOfficial?ref=creativetim>

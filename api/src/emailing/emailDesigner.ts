@@ -2,23 +2,22 @@ const util = require('util');
 const fs = require('fs');
 const path = require('path');
 
-
-
-
-module.exports = {
-    createEmailHtmlFromList(listOfData) {
-        //todo sort by rank, and take style into account
-        let htmlContent = '';
-        listOfData.forEach(value => {
-            let subSectionTitle = value.notificationEntry.title;
-            let fields = value.notificationEntry.fields;
-            htmlContent += createTabEmailHtml(value.notificationEntry, value.data);
-
-        });
-
-        return getFinaHtml(htmlContent);
-    }
+export let emailDesigner = {
+    createEmailHtmlFromList:createEmailHtmlFromList
 };
+
+function createEmailHtmlFromList(listOfData) {
+    //todo sort by rank, and take style into account
+    let htmlContent = '';
+    listOfData.forEach(value => {
+        let subSectionTitle = value.notificationEntry.title;
+        let fields = value.notificationEntry.fields;
+        htmlContent += createTabEmailHtml(value.notificationEntry, value.data);
+
+    });
+
+    return getFinaHtml(htmlContent);
+}
 
 function createLink(id, notificationEntry) {
     return util.format('%s/ui/?p=%s/%s#/entity-navigation?entityType=%s&id=%s',

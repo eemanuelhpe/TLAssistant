@@ -3,7 +3,7 @@ var router = express.Router();
 const dbUtil = require('../db_utils/dbUtil.js')
 
 router.post('/', function(req, res, next) {
-    updateEntry();
+    updateEntry('d');
     res.send('alert was added');
 });
 
