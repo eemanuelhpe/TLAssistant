@@ -1,5 +1,6 @@
 import {AlertEntry} from "../dao/AlertEntry";
 import {dbUtil} from "../db_utils/dbUtil";
+import {type} from "os";
 
 function addNotification(notificationEntry) {
     return dbUtil.updateCollection('notification_list', notificationEntry);
@@ -15,10 +16,13 @@ async function createNotificationFromTemplate(alertEntry: AlertEntry) {
 
     for (let key in template) {
         for (let replacmentKey in alertEntry.fieldsToFill) {
-            template[key] = template[key].replace('$$' + replacmentKey + '$$', alertEntry.fieldsToFill[replacmentKey]);
+            if (typeof template[key]=== 'string'){
+                template[key] = template[key].replace('$$' + replacmentKey + '$$', alertEntry.fieldsToFill[replacmentKey]);
+            }
         }
     }
     template.email = alertEntry.email;
+    delete template._id;
     await this.addNotification(template);
 }
 

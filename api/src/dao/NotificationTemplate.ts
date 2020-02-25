@@ -1,4 +1,4 @@
-export interface TemplateEntry {
+export interface NotificationTemplate {
     identifier:string;
     baseUrl: string;
     sharedSpaceId: number;
@@ -7,7 +7,8 @@ export interface TemplateEntry {
     query: string;
     title: string;
     fields: any;
-    time?: string;
     style?: "table";
-    rank?: number;
+    sqlTransformer?:string;
+    sqlCondition?:string;
+    type:string;
 }

@@ -47,7 +47,7 @@ async function createAndSentMail(email, notificationEntries) {
         contentList.push({notificationEntry: notificationEntries[i], data: resultList[i]});
     }
     let emailHtml = emailDesigner.createEmailHtmlFromList(contentList);
-    await emailService.sendEmail("today in octane", emailHtml,notificationEntries[0].email,config.emailAuth);
+    // await emailService.sendEmail("Today in octane", emailHtml,notificationEntries[0].email,config.emailAuth);
     return "Email successfully sent";
 }
 

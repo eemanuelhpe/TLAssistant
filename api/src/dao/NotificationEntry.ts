@@ -10,6 +10,10 @@ export interface NotificationEntry {
     time?: string;
     style?: "table";
     rank?: number;
+    sqlTransformer?:string;
+    sqlCondition?:string;
+    type:string;
+
 }
 
 

@@ -44,7 +44,7 @@ function getAllEntriesFromCollection(collectionName) {
 function getEntriesByIdentifier(collectionName, identifier) {
     return mongo.connect(url).then((db) => {
         var dbo = db.db("tlai_db");
-        return dbo.collection(collectionName).findOne({}).then((data) => {
+        return dbo.collection(collectionName).findOne({"identifier":{$eq:identifier}}).then((data) => {
             //if (err) throw err;
             db.close();
             return data;

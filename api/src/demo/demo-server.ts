@@ -3,7 +3,7 @@ import {octaneNotificationTask} from "../emailing/octaneNotificationTask";
 import {createSite} from "../db_setup/createSite";
 import {configurationService} from "../configuring/configurationService";
 import {NotificationEntry} from "../dao/NotificationEntry";
-import {Templates} from "./ Templates";
+import {DemoTemplates} from "./demo-templates";
 
 async function endToEnd_withoutScheduling() {
     try {
@@ -14,15 +14,8 @@ async function endToEnd_withoutScheduling() {
         await createSite.createNewCollection('mongodb://localhost:27017/', "tlai_db", "notification_list");
         await createSite.createNewCollection('mongodb://localhost:27017/', "tlai_db", "templates");
 
-        for (let template of Templates.templates){
-            await configurationService.addTemplate(template);
-            template.identifier = '';
-            let alert:AlertEntry = {
-                email:userEmail,
-                fieldsToFill:{},
-                identifier:template.identifier
-            };
-            await configurationService.createNotificationFromTemplate(alert);
+        for (let template of DemoTemplates.templates){
+            await createNotificationFromTemplate(template,userEmail,{team:'sharon'});
         }
 
     } catch (e) {
@@ -30,6 +23,16 @@ async function endToEnd_withoutScheduling() {
     }
 
     await octaneNotificationTask.sendEmailsToUsers();
+}
+
+async function createNotificationFromTemplate(template, email, fieldsToFill){
+    await configurationService.addTemplate(template);
+    let alert:AlertEntry = {
+        email:email,
+        fieldsToFill:fieldsToFill,
+        identifier:template.identifier
+    };
+    await configurationService.createNotificationFromTemplate(alert);
 }
 
 endToEnd_withoutScheduling().then(r => {});
