@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const dbUtil = require('../db_utils/dbUtil.js')
+const dbUtil = require('../db_utils/db-util.js')
 
 router.post('/', function(req, res, next) {
     updateEntry('d');

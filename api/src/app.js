@@ -9,7 +9,7 @@ var cors = require("cors");
 var indexRouter = require('../routes');
 var usersRouter = require('../routes/users');
 var testAPIRouter = require('../routes/testAPI');
-var addAlertResource = require('./configuring/add_alert_resource');
+var addAlertResource = require('./configuring/add-alert-resource');
 
 
 

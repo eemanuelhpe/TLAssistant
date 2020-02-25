@@ -1,5 +1,5 @@
-import {AlertEntry} from "../dao/AlertEntry";
-import {dbUtil} from "../db_utils/dbUtil";
+import {Alert} from "../dao/alert";
+import {dbUtil} from "../db_utils/db-util";
 import {type} from "os";
 
 function addNotification(notificationEntry) {
@@ -10,7 +10,7 @@ function addTemplate(template) {
     return dbUtil.updateCollection('templates', template);
 }
 
-async function createNotificationFromTemplate(alertEntry: AlertEntry) {
+async function createNotificationFromTemplate(alertEntry: Alert) {
     let template:any = await getTemplateByIdentifier(alertEntry.identifier);
     let i =90;
 

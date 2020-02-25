@@ -1,4 +1,4 @@
-import {NotificationEntry} from "../dao/NotificationEntry";
+import {Notification} from "../dao/notification";
 import alasql from "alasql";
 
 const util = require('util');
@@ -11,7 +11,7 @@ export let emailDesigner = {
 
 interface DataItem {
     data: any,
-    notificationEntry: NotificationEntry
+    notificationEntry: Notification
 }
 
 function createEmailHtmlFromList(listOfData: Array<DataItem>) {
@@ -20,7 +20,8 @@ function createEmailHtmlFromList(listOfData: Array<DataItem>) {
 
     listOfData.forEach(dataItem => {
         if (dataItem.notificationEntry.type === 'single') {
-            htmlContent += createSingleValueHtml(dataItem);
+            let text = dataItem.notificationEntry.title;
+            htmlContent += '<h4 style=\"color:#5558af \">'+text+'</h4>';
         }
     });
     //TODO make it mor efficiant
@@ -35,18 +36,7 @@ function createEmailHtmlFromList(listOfData: Array<DataItem>) {
     return getFinaHtml(htmlContent);
 }
 
-function createSingleValueHtml(dataItem: DataItem) {
-    let flatData:Array<any> = convertToFlatTable(dataItem);
-    if (dataItem.notificationEntry.sqlTransformer){
-        flatData = alasql(dataItem.notificationEntry.sqlTransformer,[flatData]);
-    }
-    let text:string = dataItem.notificationEntry.title;
-    for (let key in flatData[0]) {
-        text = text.replace('##' + key + '##', flatData[0][key]);
-    }
-    return '<p>'+text+'</p>';
 
-}
 
 function createLink(id, notificationEntry) {
     return util.format('%s/ui/?p=%s/%s#/entity-navigation?entityType=%s&id=%s',
@@ -71,8 +61,7 @@ function pureHtml() {
 function createSingleSectionHtml(dataItem:DataItem) {
     let str = "";
     str += '<h3 style=\"color:#5558af \">' + dataItem.notificationEntry.title + '</h3>';
-    let flatData = convertToFlatTable(dataItem);
-    flatData.forEach(item => {
+    dataItem.data.forEach(item => {
         str += createSingleEntityHtml(item, dataItem.notificationEntry);
     });
     str += '<hr>';
@@ -110,23 +99,6 @@ function createSingleEntityHtml(item, notificationEntry) {
     return str;
 }
 
-//convert nested objects to flat table
-function convertToFlatTable(dataItem: DataItem):Array<any> {
-
-    let flatTable:Array<any> =[];
-    dataItem.data.data.forEach(item => {
-        let entry = {};
-        dataItem.notificationEntry.fields.forEach(fieldLine => {
-            fieldLine.forEach(field => {
-                let fieldName:string = getFieldName(field);
-                let fieldValue = getNestedProp(item, fieldName);
-                entry[fieldName] = fieldValue;
-            });
-        });
-        flatTable.push(entry);
-    });
-    return flatTable;
-}
 
 function getLabel(field) {
     let label = field;
@@ -147,11 +119,4 @@ function getFieldName(field) {
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
-function getNestedProp(item, field) {
-    var arr = field.split(".");
-    while (arr.length && (item = item[arr.shift()])) ;
-    return item;
-}
-
 

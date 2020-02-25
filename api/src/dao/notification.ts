@@ -1,4 +1,4 @@
-export interface NotificationEntry {
+export interface Notification {
     email: string;
     baseUrl: string;
     sharedSpaceId: number;

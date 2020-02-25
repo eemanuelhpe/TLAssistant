@@ -1,8 +1,10 @@
-import {emailDesigner} from './emailDesigner';
-import {octaneConnector} from "./octaneConnector";
-import {dbUtil} from "../db_utils/dbUtil";
+import {emailDesigner} from './email-designer';
+import {octaneConnector} from "./octane-connector";
+import {dbUtil} from "../db_utils/db-util";
 import {config} from "../../privateConfig/config";
+import {DataItem, dataTransformation} from "./data-transfomation";
 import util from 'util';
+import {emailService} from "./email-service";
 
 var _ = require('lodash');
 
@@ -44,10 +46,11 @@ async function createAndSentMail(email, notificationEntries) {
 
     let contentList = []
     for (let i = 0; i < resultList.length; i++) {
-        contentList.push({notificationEntry: notificationEntries[i], data: resultList[i]});
+        let dataItem:DataItem  = dataTransformation.transformData({notificationEntry: notificationEntries[i], data: resultList[i]});
+        contentList.push(dataItem);
     }
     let emailHtml = emailDesigner.createEmailHtmlFromList(contentList);
-    // await emailService.sendEmail("Today in octane", emailHtml,notificationEntries[0].email,config.emailAuth);
+    //await emailService.sendEmail("Today in octane", emailHtml,notificationEntries[0].email,config.emailAuth);
     return "Email successfully sent";
 }
 

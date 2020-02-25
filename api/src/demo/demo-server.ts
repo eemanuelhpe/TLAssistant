@@ -1,14 +1,14 @@
-import {AlertEntry} from "../dao/AlertEntry";
-import {octaneNotificationTask} from "../emailing/octaneNotificationTask";
-import {createSite} from "../db_setup/createSite";
-import {configurationService} from "../configuring/configurationService";
-import {NotificationEntry} from "../dao/NotificationEntry";
+import {Alert} from "../dao/alert";
+import {octaneNotificationTask} from "../emailing/octane-notification-task";
+import {createSite} from "../db_setup/create-site";
+import {configurationService} from "../configuring/configuration-service";
+import {Notification} from "../dao/notification";
 import {DemoTemplates} from "./demo-templates";
 
 async function endToEnd_withoutScheduling() {
     try {
 
-        let userEmail = "eemanuel@microfocus.com";
+        let userEmail = "slin@microfocus.com";
         //let userEmail = "eemanuel@microfocus.com";
 
         await createSite.createNewCollection('mongodb://localhost:27017/', "tlai_db", "notification_list");
@@ -27,7 +27,7 @@ async function endToEnd_withoutScheduling() {
 
 async function createNotificationFromTemplate(template, email, fieldsToFill){
     await configurationService.addTemplate(template);
-    let alert:AlertEntry = {
+    let alert:Alert = {
         email:email,
         fieldsToFill:fieldsToFill,
         identifier:template.identifier

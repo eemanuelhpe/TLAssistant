@@ -7,7 +7,7 @@
 var app = require('../src/app');
 var debug = require('debug')('api:server');
 var http = require('http');
-var mailerEntryPoint = require('../src/emailing/octaneNotificationTask');
+var mailerEntryPoint = require('../src/emailing/octane-notification-task');
 
 var schedule = require('node-schedule');
 
