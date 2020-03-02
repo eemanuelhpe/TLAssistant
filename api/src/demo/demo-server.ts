@@ -8,8 +8,9 @@ import {DemoTemplates} from "./demo-templates";
 async function endToEnd_withoutScheduling() {
     try {
 
-        let userEmail = "slin@microfocus.com";
-        //let userEmail = "eemanuel@microfocus.com";
+        //let userEmail = "slin@microfocus.com";
+        //let userEmail =  "nir.yom-tov@microfocus.com";
+        let userEmail = "eemanuel@microfocus.com";
 
         await createSite.createNewCollection('mongodb://localhost:27017/', "tlai_db", "notification_list");
         await createSite.createNewCollection('mongodb://localhost:27017/', "tlai_db", "templates");
@@ -25,7 +26,7 @@ async function endToEnd_withoutScheduling() {
     await octaneNotificationTask.sendEmailsToUsers();
 }
 
-async function createNotificationFromTemplate(template, email, fieldsToFill){
+async function createNotificationFromTemplate(template:any, email:any, fieldsToFill:any){
     await configurationService.addTemplate(template);
     let alert:Alert = {
         email:email,
