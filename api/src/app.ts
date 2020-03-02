@@ -9,7 +9,7 @@ var cors = require("cors");
 var indexRouter = require('../routes');
 var usersRouter = require('../routes/users');
 var testAPIRouter = require('../routes/testAPI');
-var addAlertResource = require('./configuring/add-alert-resource');
+var appResource = require('./configuring/app-resource');
 
 
 
@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/app', addAlertResource);
+app.use('/app', appResource);
 
 
 

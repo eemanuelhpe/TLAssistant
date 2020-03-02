@@ -7,7 +7,7 @@
 var app = require('../src/app');
 var debug = require('debug')('api:server');
 var http = require('http');
-var mailerEntryPoint = require('./emailing/octane-notification-task');
+var notificationService = require('./emailing/notification-service');
 
 var schedule = require('node-schedule');
 
@@ -55,7 +55,7 @@ function normalizePort(val) {
 }
 
 function scheduleEmail(){
-  schedule.scheduleJob('42 * * * * *', mailerEntryPoint.sendEmails);
+  schedule.scheduleJob('42 * * * * *', notificationService.sendEmails);
 }
 
 

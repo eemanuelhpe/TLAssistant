@@ -1,21 +1,14 @@
 import {Alert} from "../dao/alert";
 import axios from "axios";
-import {octaneNotificationTask} from "../emailing/octane-notification-task";
-import {createSite} from "../db_setup/create-site";
-import {configurationService} from "../configuring/configuration-service";
-import {Notification} from "../dao/notification";
 import {DemoTemplates} from "./demo-templates";
 
 async function endToEnd_withoutScheduling() {
     try {
+        await createSiteDemo();
 
         //let userEmail = "slin@microfocus.com";
         //let userEmail =  "nir.yom-tov@microfocus.com";
         let userEmail = "eemanuel@microfocus.com";
-
-        await createSite.createNewCollection('mongodb://localhost:27017/', "tlai_db", "notification_list");
-        await createSite.createNewCollection('mongodb://localhost:27017/', "tlai_db", "templates");
-
         for (let template of DemoTemplates.templates){
             await createNotificationFromTemplate(template,userEmail,{team:'sharon'});
         }
@@ -25,6 +18,24 @@ async function endToEnd_withoutScheduling() {
     }
 
     await sendEmailDemo();
+}
+
+async function endToEnd_withScheduling() {
+    try {
+        await createSiteDemo();
+
+        //let userEmail = "slin@microfocus.com";
+        //let userEmail =  "nir.yom-tov@microfocus.com";
+        let userEmail = "eemanuel@microfocus.com";
+        for (let template of DemoTemplates.templates){
+            await createNotificationFromTemplate(template,userEmail,{team:'sharon'});
+        }
+
+    } catch (e) {
+        console.error("error in demo-server", e);
+    }
+
+    await scheduleDemo('8 18 * * *');
 }
 
 async function createNotificationFromTemplate(template:any, email:any, fieldsToFill:any){
@@ -64,8 +75,32 @@ function sendEmailDemo(){
             console.log(res.data);
         })
         .catch((error) => {
-            console.error('got the following error massage when trying add template: ' +error.message)
+            console.error('got the following error massage when trying send mail' + error.message)
         })
 }
 
-endToEnd_withoutScheduling().then(r => {});
+function createSiteDemo(){
+    return axios.post(baseAppUrl + '/create-site')
+        .then((res) => {
+            console.log(res.data);
+        })
+        .catch((error) => {
+            console.error('got the following error massage when trying to create site: ' +error.message)
+        })
+}
+
+function scheduleDemo(cronString:string ){
+    return axios.post(baseAppUrl + '/schedule',{cronString:cronString})
+        .then((res) => {
+            console.log(res.data);
+        })
+        .catch((error) => {
+            console.error('got the following error massage when trying to create site: ' +error.message)
+        })
+}
+
+
+
+//endToEnd_withoutScheduling().then(r => {});
+endToEnd_withScheduling().then(r => {});
+

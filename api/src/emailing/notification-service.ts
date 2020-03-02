@@ -8,7 +8,7 @@ import {emailService} from "./email-service";
 
 var _ = require('lodash');
 
-export let octaneNotificationTask = {
+export let notificationService = {
     sendEmailsToUsers: sendEmailsToUsers
 };
 
