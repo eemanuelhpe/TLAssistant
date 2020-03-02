@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "tsc && node bin/www.ts"
+    "start": "tsc && node src/www.ts"
   },
   "dependencies": {
     "alasql": "^0.5.5",

@@ -7,7 +7,7 @@
 var app = require('../src/app');
 var debug = require('debug')('api:server');
 var http = require('http');
-var mailerEntryPoint = require('../src/emailing/octane-notification-task');
+var mailerEntryPoint = require('./emailing/octane-notification-task');
 
 var schedule = require('node-schedule');
 
@@ -16,7 +16,7 @@ var schedule = require('node-schedule');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '9000');
+var port = normalizePort(process.env.PORT || '9500');
 app.set('port', port);
 
 /**
