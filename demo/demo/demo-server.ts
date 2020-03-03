@@ -3,8 +3,13 @@ import axios from "axios";
 import {DemoTemplates} from "./demo-templates";
 import {authConfig} from "../privateConfig/authConfig";
 
-//let baseAppUrl = 'http://127.0.0.1:9500/app';
-let baseAppUrl = 'http://myd-hvm03959.swinfra.net:9500/app';
+let baseAppUrl = 'http://127.0.0.1:9500/app';
+//let baseAppUrl = 'http://myd-hvm03959.swinfra.net:9500/app';
+
+
+//let userEmail = "slin@microfocus.com";
+//let userEmail =  "nir.yom-tov@microfocus.com";
+let userEmail = "eemanuel@microfocus.com";
 
 async function init(){
     await authConfig.configure(baseAppUrl);
@@ -13,11 +18,9 @@ async function init(){
 
 async function endToEnd_withoutScheduling() {
     try {
-      await init();
+        await init();
 
-        //let userEmail = "slin@microfocus.com";
-        //let userEmail =  "nir.yom-tov@microfocus.com";
-        let userEmail = "eemanuel@microfocus.com";
+
         for (let template of DemoTemplates.templates){
             await createNotificationFromTemplate(template,userEmail,{team:'sharon'});
         }
@@ -29,14 +32,10 @@ async function endToEnd_withoutScheduling() {
     await sendEmailDemo();
 }
 
-
 async function endToEnd_withScheduling() {
     try {
         await init();
 
-        //let userEmail = "slin@microfocus.com";
-        //let userEmail =  "nir.yom-tov@microfocus.com";
-        let userEmail = "eemanuel@microfocus.com";
         for (let template of DemoTemplates.templates){
             await createNotificationFromTemplate(template,userEmail,{team:'sharon'});
         }
@@ -45,7 +44,8 @@ async function endToEnd_withScheduling() {
         console.error("error in demo-server", e);
     }
 
-    await scheduleDemo('8 16 * * *');
+    await scheduleDemo('0 8 * * *');
+    await scheduleDemo('0 9 * * *');
 }
 
 async function createNotificationFromTemplate(template:any, email:any, fieldsToFill:any){

@@ -9,3 +9,5 @@
 /react/yarn.lock
 /api/dist/
 /out/
+/demo/dist/
+/demo/node_modules/

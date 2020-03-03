@@ -9,7 +9,7 @@ var cors = require("cors");
 var indexRouter = require('../routes');
 var usersRouter = require('../routes/users');
 var testAPIRouter = require('../routes/testAPI');
-var appResource = require('./configuring/app-resource');
+var appResource = require('./resources/app-resource');
 
 
 

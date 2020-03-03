@@ -7,6 +7,7 @@ import {dbUtil} from "../db_utils/db-util";
 import {authenticationService} from "../authintication/authentication-service";
 
 var router = express.Router();
+var job = null;
 
 router.post('/alert', async (req, res, next) => {
     await configurationService.createNotificationFromTemplate(req.body);
@@ -30,7 +31,10 @@ router.post('/create-site', async (req, res, next) =>{
 });
 
 router.post('/schedule', async (req, res, next) =>{
-    schedule.scheduleJob((req.body.cronString), notificationService.sendEmailsToUsers);
+    if (job){
+        job.cancel();
+    }
+    job = schedule.scheduleJob((req.body.cronString), notificationService.sendEmailsToUsers);
     res.send('you scheduled email sending with the following parameter ' + req.body.cronString);
 });
 
