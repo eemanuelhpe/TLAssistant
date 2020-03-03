@@ -1,4 +1,4 @@
-import {NotificationTemplate} from "../dao/notification-template";
+import {NotificationTemplate} from "../../api/src/dao/notification-template";
 import alasql from "alasql";
 
 

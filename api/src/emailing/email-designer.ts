@@ -44,7 +44,7 @@ function createLink(id, notificationEntry) {
 }
 
 function getFinaHtml(htmlBody) {
-    var jsonPath = path.join('.','html', 'template.html');
+    var jsonPath = path.join('..','html', 'template.html');
     let data = fs.readFileSync(jsonPath, 'utf8');
     return data.replace(' <!-- octane content -->', htmlBody);
 }
