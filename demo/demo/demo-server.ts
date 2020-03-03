@@ -6,11 +6,14 @@ import {authConfig} from "../privateConfig/authConfig";
 //let baseAppUrl = 'http://127.0.0.1:9500/app';
 let baseAppUrl = 'http://myd-hvm03959.swinfra.net:9500/app';
 
+async function init(){
+    await authConfig.configure(baseAppUrl);
+    await createSiteDemo();
+}
 
 async function endToEnd_withoutScheduling() {
     try {
-        await authConfig.configure(baseAppUrl);
-        await createSiteDemo();
+      await init();
 
         //let userEmail = "slin@microfocus.com";
         //let userEmail =  "nir.yom-tov@microfocus.com";
@@ -26,9 +29,10 @@ async function endToEnd_withoutScheduling() {
     await sendEmailDemo();
 }
 
+
 async function endToEnd_withScheduling() {
     try {
-        await createSiteDemo();
+        await init();
 
         //let userEmail = "slin@microfocus.com";
         //let userEmail =  "nir.yom-tov@microfocus.com";
@@ -41,7 +45,7 @@ async function endToEnd_withScheduling() {
         console.error("error in demo-server", e);
     }
 
-    await scheduleDemo('8 18 * * *');
+    await scheduleDemo('8 16 * * *');
 }
 
 async function createNotificationFromTemplate(template:any, email:any, fieldsToFill:any){
@@ -106,6 +110,6 @@ function scheduleDemo(cronString:string ){
 
 
 
-endToEnd_withoutScheduling().then(r => {});
-//endToEnd_withScheduling().then(r => {});
+//endToEnd_withoutScheduling().then(r => {});
+endToEnd_withScheduling().then(r => {});
 

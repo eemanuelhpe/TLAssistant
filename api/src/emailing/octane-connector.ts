@@ -1,5 +1,7 @@
 import axios from "axios";
 import httpsProxyAgent from "https-proxy-agent";
+import logger from "pino";
+
 
 let agent =  new httpsProxyAgent.HttpsProxyAgent('http://web-proxy.il.softwaregrp.net:8080/');
 
@@ -22,7 +24,7 @@ function auth(authData) {
             return res.headers['set-cookie']
         })
         .catch((error) => {
-            console.error('got the following error massage when trying to sign in to octane: ' +error.message)
+            logger.error('got the following error massage when trying to sign in to octane: ' +error.message)
         })
 }
 
@@ -42,7 +44,7 @@ function get(cookies, url) {
     }).then((res) => {
         return res.data;
     }).catch((error) => {
-     console.error('got the following error massage when requesting data from octane: ' +error.message)
+     logger.error('got the following error massage when requesting data from octane: ' +error.message)
     })
 }
 
