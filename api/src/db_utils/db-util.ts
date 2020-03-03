@@ -1,6 +1,4 @@
 import exp from "constants";
-import logger from "pino";
-
 
 const mongo = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/';
@@ -16,22 +14,22 @@ function createNewCollection(collectionName) {
         let dbo = database.db(dbName);
         return dbo.collection(collectionName).drop();
     }).then((result) => {
-        logger.info("Collection deleted");
+        console.log("Collection deleted");
         let dbo = database.db(dbName);
         return dbo.createCollection(collectionName);
     }).catch((err) => {
-        logger.error("Collection not deleted");
+        console.log("Collection not deleted");
         let dbo = database.db(dbName);
         return dbo.createCollection(collectionName);
     }).then((result) => {
-        logger.info("Collection " + collectionName + " created, in db " + dbName);
+        console.log("Collection " + collectionName + " created, in db " + dbName);
         database.close();
     }).catch((err) => {
-        logger.error("Collection not created");
+        console.log("Collection not created");
         database.close()
     }).catch((err) => {
-        logger.error("err in closing");
-        logger.error(err);
+        console.log("err in closing");
+        console.log(err);
     });
 }
 
@@ -45,14 +43,14 @@ function updateCollection(collectionName, entry) {
         let dbo = database.db(dbName);
         return dbo.collection(collectionName).insertOne(entry);
     }).then((result) => {
-        logger.info("1 document inserted");
+        console.log("1 document inserted");
         database.close();
     }).catch((err) => {
-        logger.error("Collection not updated");
+        console.log("Collection not updated");
         database.close()
     }).catch((err) => {
-        logger.error("err in closing updateCollection");
-        logger.error(err);
+        console.log("err in closing updateCollection");
+        console.log(err);
     });
 }
 
@@ -64,8 +62,8 @@ function getAllEntriesFromCollection(collectionName) {
             db.close();
             return data;
         }).catch((err) => {
-            logger.error("err in closing getAllEntriesFromCollection");
-            logger.error(err);
+            console.log("err in closing getAllEntriesFromCollection");
+            console.log(err);
         });
     });
 }
@@ -80,11 +78,11 @@ function getEntriesByIdentifier(collectionName, identifier) {
             return data;
         }).catch((err) => {
             db.close();
-            logger.error("err in finding identifier");
-            logger.error(err);
+            console.log("err in finding identifier");
+            console.log(err);
         }).catch((err) => {
-            logger.error("err in closing db");
-            logger.error(err);
+            console.log("err in closing db");
+            console.log(err);
         });
     });
 }

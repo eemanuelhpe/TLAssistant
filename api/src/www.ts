@@ -7,8 +7,6 @@ import {app} from './app';
 var debug = require('debug')('api:server');
 var http = require('http');
 var notificationService = require('./emailing/notification-service');
-import logger from "pino";
-
 
 var schedule = require('node-schedule');
 
@@ -71,11 +69,11 @@ function onError(error) {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      logger.error(bind + ' requires elevated privileges');
+      console.error(bind + ' requires elevated privileges');
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      logger.error(bind + ' is already in use');
+      console.error(bind + ' is already in use');
       process.exit(1);
       break;
     default:
@@ -93,6 +91,6 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
-  logger.log("server is listening on port " + addr.port )
+  console.log("server is listening on port " + addr.port )
 
 }
