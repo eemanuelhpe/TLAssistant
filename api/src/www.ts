@@ -53,11 +53,6 @@ function normalizePort(val) {
   return false;
 }
 
-function scheduleEmail(){
-  schedule.scheduleJob('42 * * * * *', notificationService.sendEmails);
-}
-
-
 /**
  * Event listener for HTTP server "error" event.
  */
@@ -96,4 +91,6 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log("server is listening on port " + addr.port )
+
 }
