@@ -3,8 +3,7 @@
 /**
  * Module dependencies.
  */
-
-var app = require('../src/app');
+import {app} from './app';
 var debug = require('debug')('api:server');
 var http = require('http');
 var notificationService = require('./emailing/notification-service');
