@@ -3,8 +3,8 @@ import axios from "axios";
 import {DemoTemplates} from "./demo-templates";
 import {authConfig} from "../privateConfig/authConfig";
 
-let baseAppUrl = 'http://127.0.0.1:9500/app';
-//let baseAppUrl = 'http://myd-hvm03959.swinfra.net:9500/app';
+//let baseAppUrl = 'http://127.0.0.1:9500/app';
+let baseAppUrl = 'http://myd-hvm03959.swinfra.net:9500/app';
 
 
 async function endToEnd_withoutScheduling() {
