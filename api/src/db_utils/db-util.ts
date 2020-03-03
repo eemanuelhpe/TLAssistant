@@ -4,6 +4,34 @@ const mongo = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/';
 const dbName = 'tlai_db';
 
+function createNewCollection(collectionName) {
+    let database = null;
+    return mongo.connect(url, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }).then((db) => {
+        database = db;
+        let dbo = database.db(dbName);
+        return dbo.collection(collectionName).drop();
+    }).then((result) => {
+        console.log("Collection deleted");
+        let dbo = database.db(dbName);
+        return dbo.createCollection(collectionName);
+    }).catch((err) => {
+        console.log("Collection not deleted");
+        let dbo = database.db(dbName);
+        return dbo.createCollection(collectionName);
+    }).then((result) => {
+        console.log("Collection " + collectionName + " created, in db " + dbName);
+        database.close();
+    }).catch((err) => {
+        console.log("Collection not created");
+        database.close()
+    }).catch((err) => {
+        console.log("err in closing");
+        console.log(err);
+    });
+}
 
 function updateCollection(collectionName, entry) {
     let database = null;
@@ -62,7 +90,8 @@ function getEntriesByIdentifier(collectionName, identifier) {
 export let dbUtil ={
     updateCollection:updateCollection,
     getAllEntriesFromCollection:getAllEntriesFromCollection,
-    getEntriesByIdentifier:getEntriesByIdentifier
+    getEntriesByIdentifier:getEntriesByIdentifier,
+    createNewCollection:createNewCollection
 };
 
 

@@ -1,9 +1,13 @@
 import {Alert} from "../dao/alert";
 import axios from "axios";
 import {DemoTemplates} from "./demo-templates";
+import {authConfig} from "../../privateConfig/authConfig";
+
+let baseAppUrl = 'http://127.0.0.1:9500/app';
 
 async function endToEnd_withoutScheduling() {
     try {
+        await authConfig.configure(baseAppUrl);
         await createSiteDemo();
 
         //let userEmail = "slin@microfocus.com";
@@ -47,7 +51,6 @@ async function createNotificationFromTemplate(template:any, email:any, fieldsToF
     };
     await addAlertDemo(alert);
 }
-let baseAppUrl = 'http://127.0.0.1:9500/app';
 
 function addAlertDemo(data){
     return axios.post(baseAppUrl + '/alert', data)
@@ -101,6 +104,6 @@ function scheduleDemo(cronString:string ){
 
 
 
-//endToEnd_withoutScheduling().then(r => {});
-endToEnd_withScheduling().then(r => {});
+endToEnd_withoutScheduling().then(r => {});
+//endToEnd_withScheduling().then(r => {});
 
