@@ -1,0 +1,11 @@
+/node_modules/
+/api/node_modules/
+/.idea/
+/package.json
+/package-lock.json
+/TLAssitant.iml
+/react/node_modules/
+/api/privateConfig/
+/react/yarn.lock
+/api/dist/
+/out/
