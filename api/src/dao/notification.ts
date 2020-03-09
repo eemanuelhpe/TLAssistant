@@ -1,4 +1,6 @@
-export interface Notification {
+
+
+export class NotificationEntity {
     email: string;
     baseUrl: string;
     sharedSpaceId: number;
@@ -13,6 +15,9 @@ export interface Notification {
     sqlTransformer?:string;
     sqlCondition?:string;
     type:string;
+
+    constructor() {
+    }
 
 }
 

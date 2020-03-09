@@ -1,10 +1,10 @@
 import alasql from "alasql";
-import {Notification} from "../dao/notification";
+import {NotificationEntity} from "../dao/notification";
 
 
 export interface DataItem {
     data: any,
-    notificationEntry: Notification
+    notificationEntry: NotificationEntity
 }
 
 function transformData(dataItem: DataItem):DataItem {

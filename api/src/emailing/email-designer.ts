@@ -1,4 +1,4 @@
-import {Notification} from "../dao/notification";
+import {NotificationEntity} from "../dao/notification";
 import alasql from "alasql";
 
 const util = require('util');
@@ -11,7 +11,7 @@ export let emailDesigner = {
 
 interface DataItem {
     data: any,
-    notificationEntry: Notification
+    notificationEntry: NotificationEntity
 }
 
 function createEmailHtmlFromList(listOfData: Array<DataItem>) {

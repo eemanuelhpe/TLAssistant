@@ -10,10 +10,12 @@ let baseAppUrl = 'http://127.0.0.1:9500/app';
 //let userEmail = "slin@microfocus.com";
 //let userEmail =  "nir.yom-tov@microfocus.com";
 let userEmail = "eemanuel@microfocus.com";
+let demoUtil;
 
 async function init(){
+    demoUtil = new demoUtil(baseAppUrl);
     await authConfig.configure(baseAppUrl);
-    await createSiteDemo();
+    await demoUtil.createSiteDemo();
 }
 
 async function endToEnd_withoutScheduling() {
@@ -29,7 +31,7 @@ async function endToEnd_withoutScheduling() {
         console.error("error in demo-server", e);
     }
 
-    await sendEmailDemo();
+    await demoUtil.sendEmailDemo();
 }
 
 async function endToEnd_withScheduling() {
@@ -37,79 +39,30 @@ async function endToEnd_withScheduling() {
         await init();
 
         for (let template of DemoTemplates.templates){
-            await createNotificationFromTemplate(template,userEmail,{team:'sharon'});
+            await demoUtil.createNotificationFromTemplate(template,userEmail,{team:'sharon'});
         }
 
     } catch (e) {
         console.error("error in demo-server", e);
     }
 
-    await scheduleDemo('0 8 * * *');
-    await scheduleDemo('0 9 * * *');
+    await demoUtil.scheduleDemo('0 8 * * *');
 }
 
-async function createNotificationFromTemplate(template:any, email:any, fieldsToFill:any){
-    await addTemplateDemo(template);
+async function  createNotificationFromTemplate(template:any, email:any, fieldsToFill:any){
+    await this.addTemplateDemo(template);
     let alert:Alert = {
         email:email,
         fieldsToFill:fieldsToFill,
         identifier:template.identifier
     };
-    await addAlertDemo(alert);
-}
-
-function addAlertDemo(data){
-    return axios.post(baseAppUrl + '/alert', data)
-        .then((res) => {
-            console.log(res.data);
-        })
-        .catch((error) => {
-            console.error('got the following error massage when trying add alert: ' +error.message)
-        })
-}
-
- function addTemplateDemo(data){
-    return axios.post(baseAppUrl + '/notification-template', data)
-        .then((res) => {
-            console.log(res.data);
-        })
-        .catch((error) => {
-            console.error('got the following error massage when trying add template: ' +error.message)
-        })
-}
-
-function sendEmailDemo(){
-    return axios.post(baseAppUrl + '/send-email')
-        .then((res) => {
-            console.log(res.data);
-        })
-        .catch((error) => {
-            console.error('got the following error massage when trying send mail' + error.message)
-        })
-}
-
-function createSiteDemo(){
-    return axios.post(baseAppUrl + '/create-site')
-        .then((res) => {
-            console.log(res.data);
-        })
-        .catch((error) => {
-            console.error('got the following error massage when trying to create site: ' +error.message)
-        })
-}
-
-function scheduleDemo(cronString:string ){
-    return axios.post(baseAppUrl + '/schedule',{cronString:cronString})
-        .then((res) => {
-            console.log(res.data);
-        })
-        .catch((error) => {
-            console.error('got the following error massage when trying to create site: ' +error.message)
-        })
+    await this.addAlertDemo(alert);
 }
 
 
 
-//endToEnd_withoutScheduling().then(r => {});
-endToEnd_withScheduling().then(r => {});
+
+
+endToEnd_withoutScheduling().then(r => {});
+//endToEnd_withScheduling().then(r => {});
 

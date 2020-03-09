@@ -2,28 +2,22 @@ import {Alert} from "../dao/alert";
 import {dbUtil} from "../db_utils/db-util";
 import {type} from "os";
 
-function addNotification(notificationEntry) {
-    return dbUtil.updateCollection('notification_list', notificationEntry);
+
+
+function addAlert(alert) {
+    return dbUtil.updateCollection('alerts', alert);
 }
 
 function addTemplate(template) {
     return dbUtil.updateCollection('templates', template);
 }
 
-async function createNotificationFromTemplate(alertEntry: Alert) {
-    let template:any = await getTemplateByIdentifier(alertEntry.identifier);
-    let i =90;
+function getTemplates(){
+    return dbUtil.getAllEntriesFromCollection('templates');
+}
 
-    for (let key in template) {
-        for (let replacmentKey in alertEntry.fieldsToFill) {
-            if (typeof template[key]=== 'string'){
-                template[key] = template[key].replace('$$' + replacmentKey + '$$', alertEntry.fieldsToFill[replacmentKey]);
-            }
-        }
-    }
-    template.email = alertEntry.email;
-    delete template._id;
-    await this.addNotification(template);
+function getAlerts(){
+    return dbUtil.getAllEntriesFromCollection('alerts');
 }
 
 async function getTemplateByIdentifier(identifier) {
@@ -32,9 +26,10 @@ async function getTemplateByIdentifier(identifier) {
 }
 
 export let configurationService = {
-    addNotification:addNotification,
+    addAlert:addAlert,
     addTemplate:addTemplate,
-    createNotificationFromTemplate:createNotificationFromTemplate
+    getTemplates:getTemplates,
+    getAlerts:getAlerts
 };
 
 
