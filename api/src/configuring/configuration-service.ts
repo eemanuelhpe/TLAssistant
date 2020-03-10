@@ -1,35 +1,36 @@
-import {Alert} from "../dao/alert";
 import {dbUtil} from "../db_utils/db-util";
 import {type} from "os";
+import {EmailDescriptor} from "../dao/emailDescriptor";
+import {DbConst} from "../db_utils/db-const";
 
 
 
-function addAlert(alert) {
-    return dbUtil.updateCollection('alerts', alert);
+function addEmailDescriptor(emailDescriptor:EmailDescriptor) {
+    return dbUtil.updateCollection(DbConst.EMAIL_DESCRIPTORS, emailDescriptor);
 }
 
 function addTemplate(template) {
-    return dbUtil.updateCollection('templates', template);
+    return dbUtil.updateCollection(DbConst.TEMPLATES, template);
 }
 
 function getTemplates(){
-    return dbUtil.getAllEntriesFromCollection('templates');
+    return dbUtil.getAllEntriesFromCollection(DbConst.TEMPLATES);
 }
 
-function getAlerts(){
-    return dbUtil.getAllEntriesFromCollection('alerts');
+function getEmailDescriptor(){
+    return dbUtil.getAllEntriesFromCollection(DbConst.EMAIL_DESCRIPTORS);
 }
 
 async function getTemplateByIdentifier(identifier) {
-   let template =  await dbUtil.getEntriesByIdentifier('templates',identifier);
+   let template =  await dbUtil.getEntriesByIdentifier(DbConst.TEMPLATES,identifier);
    return template;
 }
 
 export let configurationService = {
-    addAlert:addAlert,
+    addEmailDescriptor:addEmailDescriptor,
     addTemplate:addTemplate,
     getTemplates:getTemplates,
-    getAlerts:getAlerts
+    getEmailDescriptor:getEmailDescriptor
 };
 
 

@@ -1,5 +1,6 @@
-import {Alert} from "../../api/src/dao/alert";
+import {EmailDescriptor} from "../../api/src/dao/emailDescriptor";
 import axios from "axios";
+import {ResourceConst} from "../../api/src/resources/resource-const";
 
 export class DemoUtil{
 
@@ -9,8 +10,8 @@ export class DemoUtil{
         this.baseAppUrl = baseAppUrl;
     }
 
-     addAlertDemo(data){
-        return axios.post(this.baseAppUrl + '/alert', data)
+      addEmailDescriptorDemo(data){
+        return axios.post(this.baseAppUrl + '/' + ResourceConst.EMAIL_DESCRIPTORS, data)
             .then((res) => {
                 console.log(res.data);
             })
@@ -20,7 +21,7 @@ export class DemoUtil{
     }
 
      addTemplateDemo(data){
-        return axios.post(this.baseAppUrl + '/notification-template', data)
+        return axios.post(this.baseAppUrl + '/' + ResourceConst.TEMPLATES , data)
             .then((res) => {
                 console.log(res.data);
             })

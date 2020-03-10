@@ -4,6 +4,8 @@ const mongo = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/';
 const dbName = 'tlai_db';
 
+
+
 function createNewCollection(collectionName) {
     let database = null;
     return mongo.connect(url, {

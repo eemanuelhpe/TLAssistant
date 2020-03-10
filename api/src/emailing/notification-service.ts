@@ -5,45 +5,30 @@ import {DataItem, dataTransformation} from "./data-transfomation";
 import util from 'util';
 import {emailService} from "./email-service";
 import {authenticationService} from "../authintication/authentication-service";
-import {Alert} from "../dao/alert";
+import {Alert, EmailDescriptor} from "../dao/emailDescriptor";
 import {NotificationTemplate} from "../dao/notification-template";
 import {NotificationEntity} from "../dao/notification";
+import {DbConst} from "../db_utils/db-const";
 
 var _ = require('lodash');
-
-
-
 
 export let notificationService = {
     sendEmailsToUsers: sendEmailsToUsers
 };
 
 async function sendEmailsToUsers() {
-    let alerts = await dbUtil.getAllEntriesFromCollection('alerts');
-    let templates = await dbUtil.getAllEntriesFromCollection('templates');
+    let descriptors: Array<EmailDescriptor> = await dbUtil.getAllEntriesFromCollection(DbConst.EMAIL_DESCRIPTORS);
+    let templates = await dbUtil.getAllEntriesFromCollection(DbConst.TEMPLATES);
+    let templatesMap:Map<string,NotificationTemplate> = new Map(templates.map(template => [template.identifier, template]));
 
-    let notificationMap = createNotificationMap(templates,alerts);
+    descriptors.forEach(descriptor =>{
+        let notificationList:Array<NotificationEntity> = [];
+        descriptor.alerts.forEach(alert =>{
+            notificationList.push(buildNotification(alert,templatesMap.get(alert.templateIdentifier)))
+        })
 
-    for (let [email, notifications] of notificationMap) {
-        createAndSendMail(email, notifications);
-    }
-}
-
-function createNotificationMap(templates:Array<NotificationTemplate>,alerts:Array<Alert>){
-    let notificationMap = new Map();
-    let templatesMap = new Map(templates.map(template => [template.identifier, template]));
-
-    alerts.forEach(alert => {
-        let entries = notificationMap.get(alert.email);
-        if (!entries) {
-            entries = [];
-            notificationMap.set(alert.email, entries);
-        }
-        let notification = buildNotification(alert,templatesMap.get(alert.identifier));
-        entries.push(notification);
+        createAndSendMail(descriptor,notificationList);
     });
-    return notificationMap;
-
 }
 
 function buildNotification(alert:Alert, template:NotificationTemplate){
@@ -57,7 +42,6 @@ function buildNotification(alert:Alert, template:NotificationTemplate){
             }
         }
     }
-    notification.email = alert.email;
     return notification;
 }
 
@@ -79,9 +63,10 @@ function convertTemplateToNotification(template:NotificationTemplate):Notificati
 
 
 
-async function createAndSendMail(email, notificationEntries) {
+async function createAndSendMail(descriptor:EmailDescriptor, notificationEntries) {
     let authData = await authenticationService.getOctaneAuth();
     let promiseArray = [];
+
 
     notificationEntries.forEach(entry => {
         let url = buildUrl(entry);
@@ -100,7 +85,7 @@ async function createAndSendMail(email, notificationEntries) {
         contentList.push(dataItem);
     }
     let emailHtml = emailDesigner.createEmailHtmlFromList(contentList);
-    await emailService.sendEmail("Today in octane", emailHtml,notificationEntries[0].email,await authenticationService.getSenderEmailDetails());
+    //await emailService.sendEmail("Today in octane", emailHtml,descriptor.email,await authenticationService.getSenderEmailDetails());
     return "Email successfully sent";
 }
 

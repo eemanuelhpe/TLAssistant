@@ -5,16 +5,19 @@ import {configurationService} from "../configuring/configuration-service";
 import schedule from "node-schedule";
 import {dbUtil} from "../db_utils/db-util";
 import {authenticationService} from "../authintication/authentication-service";
+import {ResourceConst} from "./resource-const";
+import {DbConst} from "../db_utils/db-const";
 
 var router = express.Router();
 var job = null;
 
-router.post('/alert', async (req, res, next) => {
-    await configurationService.addAlert(req.body);
+
+router.post('/' + ResourceConst.EMAIL_DESCRIPTORS, async (req, res, next) => {
+    await configurationService.addEmailDescriptor(req.body);
     res.send('alert was added');
 });
 
-router.post('/notification-template', async (req, res, next) =>{
+router.post('/' + ResourceConst.TEMPLATES, async (req, res, next) =>{
     await configurationService.addTemplate(req.body);
     res.send('notification was added');
 });
@@ -25,8 +28,8 @@ router.post('/send-email', async (req, res, next) =>{
 });
 
 router.post('/create-site', async (req, res, next) =>{
-    await dbUtil.createNewCollection("alerts");
-    await dbUtil.createNewCollection( "templates");
+    await dbUtil.createNewCollection(DbConst.EMAIL_DESCRIPTORS);
+    await dbUtil.createNewCollection( DbConst.TEMPLATES);
     res.send('old site deleted and new site was created');
 });
 
@@ -48,14 +51,14 @@ router.post('/octane-auth', async (req, res, next) =>{
     res.send('you added octane auth with the following parameter ' + req.body);
 });
 
-router.get('/templates', async (req, res, next) =>{
+router.get('/' + ResourceConst.TEMPLATES , async (req, res, next) =>{
    let templates =  await configurationService.getTemplates();
     res.send(templates);
 });
 
-router.get('/alerts', async (req, res, next) =>{
-    let alerts = await configurationService.getAlerts();
-    res.send(alerts);
+router.get('/' + ResourceConst.EMAIL_DESCRIPTORS , async (req, res, next) =>{
+    let emailDescriptors = await configurationService.getEmailDescriptor();
+    res.send(emailDescriptors);
 });
 
 
