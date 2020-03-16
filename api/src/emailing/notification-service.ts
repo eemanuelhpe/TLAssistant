@@ -85,7 +85,7 @@ async function createAndSendMail(descriptor:EmailDescriptor, notificationEntries
         contentList.push(dataItem);
     }
     let emailHtml = emailDesigner.createEmailHtmlFromList(contentList);
-    //await emailService.sendEmail("Today in octane", emailHtml,descriptor.email,await authenticationService.getSenderEmailDetails());
+    await emailService.sendEmail("Today in octane", emailHtml,descriptor.email,await authenticationService.getSenderEmailDetails());
     return "Email successfully sent";
 }
 

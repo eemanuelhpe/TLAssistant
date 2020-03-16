@@ -6,7 +6,6 @@ import {NotificationTemplate} from "../../api/src/dao/notification-template";
 import {DemoUtil} from "./demo-util";
 
 let baseAppUrl = 'http://127.0.0.1:9500/app';
-//let baseAppUrl = 'http://myd-hvm03959.swinfra.net:9500/app';
 
 
 //let userEmail = "slin@microfocus.com";

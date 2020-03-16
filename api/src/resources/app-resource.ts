@@ -19,12 +19,12 @@ router.post('/' + ResourceConst.EMAIL_DESCRIPTORS, async (req, res, next) => {
 
 router.post('/' + ResourceConst.TEMPLATES, async (req, res, next) =>{
     await configurationService.addTemplate(req.body);
-    res.send('notification was added');
+    res.send('template was added');
 });
 
 router.post('/send-email', async (req, res, next) =>{
     await notificationService.sendEmailsToUsers()
-    res.send('notification was added');
+    res.send('mail sent');
 });
 
 router.post('/create-site', async (req, res, next) =>{
