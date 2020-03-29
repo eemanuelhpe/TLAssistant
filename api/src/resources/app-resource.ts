@@ -23,7 +23,7 @@ router.post('/' + ResourceConst.TEMPLATES, async (req, res, next) =>{
 });
 
 router.post('/send-email', async (req, res, next) =>{
-    await notificationService.sendEmailsToUsers()
+    await notificationService.sendEmailsToUsers();
     res.send('mail sent');
 });
 

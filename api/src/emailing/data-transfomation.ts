@@ -41,7 +41,7 @@ function sqlTransformation(dataItem: DataItem) :any{
 function transformText(dataItem: DataItem):any {
     var text =  dataItem.notificationEntry.title;
     for (let key in dataItem.data[0]) {
-        text = text.replace('##' + key + '##', dataItem.data[0][key]);
+        text = text.replace('<$' + key + '$>', dataItem.data[0][key]);
     }
     return text;
 }

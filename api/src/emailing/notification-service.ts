@@ -38,7 +38,7 @@ function buildNotification(alert:Alert, template:NotificationTemplate){
     for (let key in notification) {
         for (let replacmentKey in alert.fieldsToFill) {
             if (typeof notification[key]=== 'string'){
-                notification[key] = template[key].replace('$$' + replacmentKey + '$$', alert.fieldsToFill[replacmentKey]);
+                notification[key] = template[key].replace('{$' + replacmentKey + '$}', alert.fieldsToFill[replacmentKey]);
             }
         }
     }
